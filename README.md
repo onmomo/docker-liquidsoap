@@ -12,6 +12,7 @@ docker run --link some-icecast -v /music:/music:ro phasecorex/liquidsoap /music/
 ```
 This has been heavily modified from infiniteproject/liquidsoap:
 - Added support for opus, flac, and m4a/aac files
+- Added support ffmpeg binary. Allows to run ffprobe cmd via process.read()
 - Much smaller image size (203MB instead of 1.66GB)
 - Multiarch support
     - You can run it on a Raspberry Pi if you want to.
@@ -24,3 +25,9 @@ This has been heavily modified from infiniteproject/liquidsoap:
     - You can set environment variable `NICENESS` to a value from -20 to 19 to set the niceness of the Liquidsoap process.
 
 Feedback appreciated!
+
+## How to build
+
+```
+docker buildx build --platform linux/arm64,linux/amd64 --progress plain --push -t onmomo/liquidsoap:latest .
+```

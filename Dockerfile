@@ -1,6 +1,6 @@
 FROM ocaml/opam:debian-12-ocaml-4.14 AS builder
 
-ENV PACKAGES="taglib mad lame vorbis cry samplerate opus fdkaac faad flac ocurl liquidsoap sqlite3"
+ENV PACKAGES="taglib mad lame vorbis cry samplerate opus fdkaac faad flac ocurl liquidsoap sqlite3 ffmpeg"
 
 USER root
 
@@ -33,8 +33,11 @@ COPY --from=builder /home/opam/root /
 RUN set -eux; \
     sed -i 's/^Components:.*/Components: main contrib non-free/g' /etc/apt/sources.list.d/debian.sources; \
     apt-get update; \
-    cat /app/depexts | xargs apt-get install -y --no-install-recommends; \
+    apt-get install -y --no-install-recommends ffmpeg $(tr '\n' ' ' < /app/depexts); \
     rm -rf /var/lib/apt/lists/*; \
     /app/liquidsoap --version
+
+# Add custom record.liq script
+ADD --chown=1000:1000 https://raw.githubusercontent.com/onmomo/liquidsoap-record/refs/heads/main/record.liq /app/scripts/
 
 ENTRYPOINT ["/bin/user-entrypoint", "/app/liquidsoap"]

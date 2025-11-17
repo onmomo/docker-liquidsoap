@@ -31,3 +31,9 @@ Feedback appreciated!
 ```
 docker buildx build --platform linux/arm64,linux/amd64 --progress plain --push -t onmomo/liquidsoap:latest .
 ```
+
+## How to run
+
+```
+app/scripts/record.liq -- -url http://stream.radioparadise.com/flacm -dir /music/ -covers 0 -id s308827 -single -transcode 0 -station "Radio Paradise (Main Mix)"
+```
